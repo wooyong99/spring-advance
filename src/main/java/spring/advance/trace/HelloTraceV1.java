@@ -10,8 +10,8 @@ public class HelloTraceV1 {
     private static final String COMPLETE_PREFIX = "<--";
     private static final String EX_PREFIX = "<X-";
 
-    public TraceStatus begin(String message) {
-        TraceId traceId = new TraceId();
+    public TraceStatus begin(String message, TraceId id) {
+        TraceId traceId = id;
         Long startTimeMs = System.currentTimeMillis();
         log.info("[{}] {}{}", traceId.getId(), addSpace(START_PREFIX,
                 traceId.getLevel()), message);
