@@ -14,7 +14,7 @@ public class OrderRepositoryV1 {
     public void save(String itemId, TraceId traceId) {
         TraceStatus traceStatus = null;
         try {
-            traceStatus = trace.begin("OrderRepositoryV1.save", traceId);
+            traceStatus = trace.begin("OrderRepository.save", traceId);
             if (itemId.equals("ex")) {
                 throw new IllegalArgumentException("예외 발생");
             }
