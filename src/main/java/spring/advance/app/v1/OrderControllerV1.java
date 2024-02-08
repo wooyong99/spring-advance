@@ -15,14 +15,14 @@ public class OrderControllerV1 {
 
     @GetMapping("/v1/request")
     public String request(String itemId) {
-        TraceStatus traceStatus = null;
+        TraceStatus status = null;
         try {
-            traceStatus = trace.begin("OrderController.request", new TraceId());
-            orderServiceV1.orderItem(itemId, traceStatus.getTraceId().createNextId());
-            trace.end(traceStatus);
+            status = trace.begin("OrderController.request", new TraceId());
+            orderServiceV1.orderItem(itemId, status.getTraceId().createNextId());
+            trace.end(status);
             return "ok";
         } catch (Exception e) {
-            trace.exception(traceStatus, e);
+            trace.exception(status, e);
             throw e;
         }
     }
