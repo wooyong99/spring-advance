@@ -12,16 +12,16 @@ public class OrderRepositoryV1 {
     private final HelloTraceV1 trace;
 
     public void save(String itemId, TraceId traceId) {
-        TraceStatus traceStatus = null;
+        TraceStatus status = null;
         try {
-            traceStatus = trace.begin("OrderRepository.save", traceId);
+            status = trace.begin("OrderRepository.save", traceId);
             if (itemId.equals("ex")) {
                 throw new IllegalArgumentException("예외 발생");
             }
             sleep(1000);
-            trace.end(traceStatus);
+            trace.end(status);
         } catch (Exception e) {
-            trace.exception(traceStatus, e);
+            trace.exception(status, e);
             throw e;
         }
 

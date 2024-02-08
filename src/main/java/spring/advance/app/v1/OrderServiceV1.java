@@ -13,13 +13,13 @@ public class OrderServiceV1 {
     private final HelloTraceV1 trace;
 
     public void orderItem(String itemId, TraceId traceId) {
-        TraceStatus traceStatus = null;
+        TraceStatus status = null;
         try {
-            traceStatus = trace.begin("OrderService.orderItem", traceId);
-            orderRepositoryV1.save(itemId, traceStatus.getTraceId().createNextId());
-            trace.end(traceStatus);
+            status = trace.begin("OrderService.orderItem", traceId);
+            orderRepositoryV1.save(itemId, status.getTraceId().createNextId());
+            trace.end(status);
         } catch (Exception e) {
-            trace.exception(traceStatus, e);
+            trace.exception(status, e);
             throw e;
         }
     }
