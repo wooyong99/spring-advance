@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import spring.advance.trace.HelloTraceV1;
-import spring.advance.trace.TraceId;
 import spring.advance.trace.TraceStatus;
 
 @RestController
@@ -17,8 +16,8 @@ public class OrderControllerV1 {
     public String request(String itemId) {
         TraceStatus status = null;
         try {
-            status = trace.begin("OrderController.request", new TraceId());
-            orderServiceV1.orderItem(itemId, status.getTraceId().createNextId());
+            status = trace.begin("OrderController.request");
+            orderServiceV1.orderItem(itemId, status.getTraceId());
             trace.end(status);
             return "ok";
         } catch (Exception e) {

@@ -12,11 +12,11 @@ public class OrderServiceV1 {
     private final OrderRepositoryV1 orderRepositoryV1;
     private final HelloTraceV1 trace;
 
-    public void orderItem(String itemId, TraceId traceId) {
+    public void orderItem(String itemId, TraceId beforeId) {
         TraceStatus status = null;
         try {
-            status = trace.begin("OrderService.orderItem", traceId);
-            orderRepositoryV1.save(itemId, status.getTraceId().createNextId());
+            status = trace.beginSync(beforeId, "OrderService.orderItem");
+            orderRepositoryV1.save(itemId, status.getTraceId());
             trace.end(status);
         } catch (Exception e) {
             trace.exception(status, e);
