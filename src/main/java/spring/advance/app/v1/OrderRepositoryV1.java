@@ -11,10 +11,10 @@ import spring.advance.trace.TraceStatus;
 public class OrderRepositoryV1 {
     private final HelloTraceV1 trace;
 
-    public void save(String itemId, TraceId traceId) {
+    public void save(String itemId, TraceId beforeTraceId) {
         TraceStatus status = null;
         try {
-            status = trace.begin("OrderRepository.save", traceId);
+            status = trace.beginSync(beforeTraceId, "OrderRepository.save");
             if (itemId.equals("ex")) {
                 throw new IllegalArgumentException("예외 발생 !");
             }
