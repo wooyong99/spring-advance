@@ -1,7 +1,9 @@
-package spring.advance.trace;
+package spring.advance.trace.hellotrace;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import spring.advance.trace.TraceId;
+import spring.advance.trace.TraceStatus;
 
 public class HelloTraceV1Test {
 
