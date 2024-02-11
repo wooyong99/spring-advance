@@ -2,9 +2,9 @@ package spring.advance.app.v1;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import spring.advance.trace.HelloTraceV1;
 import spring.advance.trace.TraceId;
 import spring.advance.trace.TraceStatus;
+import spring.advance.trace.hellotrace.HelloTraceV1;
 
 @Service
 @RequiredArgsConstructor

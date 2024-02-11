@@ -1,37 +1,43 @@
-package spring.advance.trace;
+package spring.advance.trace.logtrace;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
+import spring.advance.trace.TraceId;
+import spring.advance.trace.TraceStatus;
 
 @Slf4j
-@Component
-public class HelloTraceV1 {
+public class FieldLogTrace implements LogTrace {
     private static final String START_PREFIX = "-->";
     private static final String COMPLETE_PREFIX = "<--";
     private static final String EX_PREFIX = "<X-";
 
+    private TraceId traceIdHolder = new TraceId();
+
+    @Override
     public TraceStatus begin(String message) {
-        TraceId traceId = new TraceId();
+        traceIdHolder = syncTraceId();
         Long startTimeMs = System.currentTimeMillis();
-        log.info("[{}] {}{}", traceId.getId(), addSpace(START_PREFIX,
-                traceId.getLevel()), message);
-        return new TraceStatus(traceId, startTimeMs, message);
+        log.info("[{}] {}{}", traceIdHolder.getId(), addSpace(START_PREFIX,
+                traceIdHolder.getLevel()), message);
+        return new TraceStatus(traceIdHolder, startTimeMs, message);
     }
 
-    public TraceStatus beginSync(TraceId beforeTraceId, String message) {
-        TraceId traceId = beforeTraceId.createNextId();
-        Long startTimeMs = System.currentTimeMillis();
-        log.info("[{}] {}{}", traceId.getId(), addSpace(START_PREFIX,
-                traceId.getLevel()), message);
-        return new TraceStatus(traceId, startTimeMs, message);
+    private TraceId syncTraceId() {
+        if (traceIdHolder == null) {
+            return new TraceId();
+        }
+        return traceIdHolder.createNextId();
     }
 
+    @Override
     public void end(TraceStatus status) {
         complete(status, null);
+        traceIdHolder = releaseTraceId();
     }
 
+    @Override
     public void exception(TraceStatus status, Exception e) {
         complete(status, e);
+        traceIdHolder = releaseTraceId();
     }
 
     private void complete(TraceStatus status, Exception e) {
@@ -47,6 +53,13 @@ public class HelloTraceV1 {
                     addSpace(EX_PREFIX, traceId.getLevel()), status.getMessage(), resultTimeMs,
                     e.toString());
         }
+    }
+
+    private TraceId releaseTraceId() {
+        if (traceIdHolder.isFirstLevel()) {
+            return null;
+        }
+        return traceIdHolder.createPreviousId();
     }
 
     private static String addSpace(String prefix, int level) {

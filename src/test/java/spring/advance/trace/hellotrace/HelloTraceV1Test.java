@@ -2,7 +2,7 @@ package spring.advance.trace.hellotrace;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import spring.advance.trace.HelloTraceV1;
+import spring.advance.trace.TraceId;
 import spring.advance.trace.TraceStatus;
 
 public class HelloTraceV1Test {
@@ -11,7 +11,7 @@ public class HelloTraceV1Test {
     @Test
     public void success() {
         HelloTraceV1 helloTraceV1 = new HelloTraceV1();
-        TraceStatus traceStatus = helloTraceV1.begin("hello");
+        TraceStatus traceStatus = helloTraceV1.begin("hello", new TraceId());
         helloTraceV1.end(traceStatus);
     }
 
@@ -19,25 +19,7 @@ public class HelloTraceV1Test {
     @Test
     public void exception() {
         HelloTraceV1 helloTraceV1 = new HelloTraceV1();
-        TraceStatus traceStatus = helloTraceV1.begin("hello");
+        TraceStatus traceStatus = helloTraceV1.begin("hello", new TraceId());
         helloTraceV1.exception(traceStatus, new IllegalArgumentException("예외 호출"));
-    }
-
-    @Test
-    public void begin_end() {
-        HelloTraceV1 helloTraceV1 = new HelloTraceV1();
-        TraceStatus status1 = helloTraceV1.begin("hello1");
-        TraceStatus status2 = helloTraceV1.beginSync(status1.getTraceId(), "hello2");
-        helloTraceV1.end(status2);
-        helloTraceV1.end(status1);
-    }
-
-    @Test
-    public void begin_exception() {
-        HelloTraceV1 helloTraceV1 = new HelloTraceV1();
-        TraceStatus status1 = helloTraceV1.begin("hello1");
-        TraceStatus status2 = helloTraceV1.beginSync(status1.getTraceId(), "hello2");
-        helloTraceV1.exception(status2, new IllegalArgumentException());
-        helloTraceV1.exception(status1, new IllegalArgumentException());
     }
 }

@@ -1,20 +1,20 @@
-package spring.advance.app.v1;
+package spring.advance.app.v2;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import spring.advance.trace.TraceId;
 import spring.advance.trace.TraceStatus;
-import spring.advance.trace.hellotrace.HelloTraceV1;
+import spring.advance.trace.logtrace.LogTrace;
 
 @Repository
 @RequiredArgsConstructor
-public class OrderRepositoryV1 {
-    private final HelloTraceV1 trace;
+public class OrderRepositoryV2 {
+    private final LogTrace trace;
 
-    public void save(String itemId, TraceId beforeTraceId) {
+    public void save(String itemId, TraceId traceId) {
         TraceStatus status = null;
         try {
-            status = trace.beginSync(beforeTraceId, "OrderRepository.save");
+            status = trace.begin("OrderRepository.save");
             if (itemId.equals("ex")) {
                 throw new IllegalArgumentException("예외 발생 !");
             }
