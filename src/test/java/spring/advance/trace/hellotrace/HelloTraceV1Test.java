@@ -2,7 +2,6 @@ package spring.advance.trace.hellotrace;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import spring.advance.trace.TraceId;
 import spring.advance.trace.TraceStatus;
 
 public class HelloTraceV1Test {
@@ -11,7 +10,7 @@ public class HelloTraceV1Test {
     @Test
     public void success() {
         HelloTraceV1 helloTraceV1 = new HelloTraceV1();
-        TraceStatus traceStatus = helloTraceV1.begin("hello", new TraceId());
+        TraceStatus traceStatus = helloTraceV1.begin("hello");
         helloTraceV1.end(traceStatus);
     }
 
@@ -19,7 +18,7 @@ public class HelloTraceV1Test {
     @Test
     public void exception() {
         HelloTraceV1 helloTraceV1 = new HelloTraceV1();
-        TraceStatus traceStatus = helloTraceV1.begin("hello", new TraceId());
+        TraceStatus traceStatus = helloTraceV1.begin("hello");
         helloTraceV1.exception(traceStatus, new IllegalArgumentException("예외 호출"));
     }
 }
